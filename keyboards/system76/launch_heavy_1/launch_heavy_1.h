@@ -1,9 +1,25 @@
-#ifndef LAUNCH_HEAVY_1_H
-#define LAUNCH_HEAVY_1_H
+/*
+ *  Copyright (C) 2021  System76
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+#pragma once
 
 #include "quantum.h"
 
-#define xxx KC_NO
+#define ___ KC_NO
 
 #define LAYOUT( \
  K00, K01, K02, K03, K04, K05, K06, K07, K08, K09, K0A, K0B, K0C,  K0D,  K0E,  K0F, K0G, K0H, K0I, \
@@ -19,12 +35,10 @@
     { K30, K31, K32, K33, K34, K35, K36, K37, K38, K39, K3A, K3B, K3C, K0E }, \
     { K40, K41, K42, K43, K44, K45, K46, K47, K48, K49, K4A, K4B, K4C, K1E }, \
     { K50, K51, K52, K53, K54, K3D, K55, K56, K57, K58, K59, K5A, K5B, K2E }, \
-    { xxx, xxx, xxx, K0I, K0H, K0G, xxx, xxx, xxx, xxx, xxx, xxx, K0F, xxx }, \
-    { xxx, xxx, xxx, K1I, K1H, K1G, xxx, xxx, xxx, xxx, xxx, xxx, K1F, xxx }, \
-    { xxx, xxx, xxx, K2I, K2H, K2G, xxx, xxx, xxx, xxx, xxx, xxx, K2F, xxx }, \
-    { xxx, xxx, xxx, xxx, K3G, K3F, xxx, xxx, xxx, xxx, xxx, xxx, K3E, xxx }, \
-    { xxx, xxx, xxx, K4G, K4F, K4E, xxx, xxx, xxx, xxx, xxx, xxx, K4D, xxx }, \
-    { xxx, xxx, xxx, xxx, K5D, xxx, xxx, xxx, xxx, xxx, xxx, xxx, K5C, xxx }, \
+    { ___, ___, ___, K0I, K0H, K0G, ___, ___, ___, ___, ___, ___, K0F, ___ }, \
+    { ___, ___, ___, K1I, K1H, K1G, ___, ___, ___, ___, ___, ___, K1F, ___ }, \
+    { ___, ___, ___, K2I, K2H, K2G, ___, ___, ___, ___, ___, ___, K2F, ___ }, \
+    { ___, ___, ___, ___, K3G, K3F, ___, ___, ___, ___, ___, ___, K3E, ___ }, \
+    { ___, ___, ___, K4G, K4F, K4E, ___, ___, ___, ___, ___, ___, K4D, ___ }, \
+    { ___, ___, ___, ___, K5D, ___, ___, ___, ___, ___, ___, ___, K5C, ___ }  \
 }
-
-#endif // LAUNCH_HEAVY_1_H
