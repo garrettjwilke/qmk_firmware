@@ -1,8 +1,5 @@
 #include QMK_KEYBOARD_H
 
-static bool lctl_pressed, rctl_pressed, esc_pressed;
-void system76_ec_unlock(void);
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Layer 0, Dvorak layer
@@ -70,10 +67,10 @@ ________________________________________________________________________________
     /* Layer 2, function layer
 __________________________________________________________________________________________________________________________________  ________
 |        |        |        |        |        |        |        |        |        |        |        |        |        |            ||        |
-| RESET  |        |        | Insert |        |        |        |        |        |        |        |        |        |            || Dvorak |
+| RESET  |        |        |        |        |        |        |        |        |        |        |        |        |            || Dvorak |
 |________|________|________|________|________|________|________|________|________|________|________|________|________|____________||________|
-|        |        |        |        |        |        |        |        |        |        |  LED   |  LED   |  LED   |            ||        |
-|        |        |        |        |        |        |        |        |        |        | TOGGLE |  DOWN  |  UP    |            || Qwerty |
+|        |        |        |        |        |        |        |        |        |        |        |        |        |            ||        |
+|        |        |        |        |        |        |        |        |        |        |        |        |        |            || Qwerty |
 |________|________|________|________|________|________|________|________|________|________|________|________|________|____________||________|
 |            |        |        |        |        |        |        |        |        |        |        |        |        |        ||        |
 |            |  Home  |   Up   |  End   |  PgUp  |        |  PgUp  |  Home  |   Up   |  End   |        |        |        | PrtScr ||        |
@@ -93,8 +90,8 @@ ________________________________________________________________________________
 */
 
   [2] = LAYOUT(
-    QK_BOOT, KC_TRNS, KC_TRNS, KC_INS,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     TO(0),
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, RGB_TOG, RGB_VAD, RGB_VAI, KC_TRNS,     TO(1),
+    QK_BOOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     TO(0),
+    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,     TO(1),
         KC_TRNS, KC_HOME, KC_UP,   KC_END,  KC_PGUP, KC_TRNS, KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_TRNS, KC_TRNS, KC_TRNS, KC_PSCR, KC_TRNS,
           KC_TRNS, KC_LEFT, KC_DOWN, KC_RGHT, KC_PGDN, KC_TRNS, KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_TRNS, KC_TRNS,    KC_TRNS,     KC_TRNS,
           KC_TRNS,   KC_MPLY, KC_MPRV, KC_MNXT, KC_VOLD, KC_VOLU, KC_MUTE, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS,    KC_PGUP,
@@ -112,22 +109,5 @@ ________________________________________________________________________________
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-    case KC_LCTL:
-        lctl_pressed = record->event.pressed;
-        break;
-    case KC_RCTL:
-        rctl_pressed = record->event.pressed;
-        break;
-    case KC_ESC:
-        esc_pressed = record ->event.pressed;
-        break;
-    };
     return true;
-}
-
-void matrix_scan_user(void) {
-    if (lctl_pressed && rctl_pressed && esc_pressed) {
-        system76_ec_unlock();
-    }
 }
