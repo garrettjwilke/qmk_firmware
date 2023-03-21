@@ -446,7 +446,7 @@ void usb_mux_event(void) {
 
 void usb_mux_init(void) {
     // Wait for power stable
-    //wait_ms(10);
+    wait_ms(10);
 
     // Set RESET_USB high
     setPinOutput(GP20);
