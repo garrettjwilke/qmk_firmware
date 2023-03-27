@@ -24,6 +24,8 @@
 #include "i2c_master.h"
 #include "wait.h"
 
+#define GPIO_RESET_USB GP20
+
 #define REG_PF1_CTL 0xBF800C04
 #define REG_PIO64_OEN 0xBF800908
 #define REG_PIO64_OUT 0xBF800928
@@ -445,18 +447,21 @@ void usb_mux_event(void) {
 }
 
 void usb_mux_init(void) {
-    // Wait for power stable
-    wait_ms(10);
-
-    // Set RESET_USB high
-    setPinOutput(GP20);
-    writePinHigh(GP20);
+    // Put the USB hub in reset
+    setPinOutput(GPIO_RESET_USB);
+    writePinLow(GPIO_RESET_USB);
 
     // Run I2C bus at 100 kHz
     i2c_init();
 
-    // Wait for hub reset
-    wait_ms(50);
+    // Wait for power stable
+    wait_ms(10);
+
+    // Take the USB hub out of reset
+    writePinHigh(GPIO_RESET_USB);
+
+    // Wait for USB hub to come out of reset
+    wait_ms(100);
 
     // Set up hub
     usb7206_init(&usb_hub);
