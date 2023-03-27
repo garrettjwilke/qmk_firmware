@@ -455,6 +455,9 @@ void usb_mux_init(void) {
     // Run I2C bus at 100 kHz
     i2c_init();
 
+    // Wait for hub reset
+    wait_ms(50);
+
     // Set up hub
     usb7206_init(&usb_hub);
 
