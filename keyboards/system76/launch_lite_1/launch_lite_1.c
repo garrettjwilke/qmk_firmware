@@ -125,7 +125,9 @@ void matrix_init_kb(void) {
     } else {
         system76_ec_rgb_eeprom(false);
     }
+}
 
+void keyboard_post_init_user(void) {
     system76_ec_rgb_layer(layer_state);
 }
 
