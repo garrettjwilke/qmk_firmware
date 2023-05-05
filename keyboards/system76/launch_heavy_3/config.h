@@ -23,7 +23,7 @@
  * ROWS: GPIO pins used for rows, top to bottom
  * COLS: GPIO pins used for columns, left to right
  */
-#define MATRIX_ROW_PINS { GP24, GP23, GP22, GP21, GP28, GP15 }
+#define MATRIX_ROW_PINS { GP24, GP23, GP22, GP21, GP28, GP15, GP29, GP0, GP1, GP2, GP3, GP4 }
 #define MATRIX_COL_PINS { GP12, GP11, GP10, GP9, GP8, GP6, GP13, GP14, GP16, GP17, GP18, GP19, GP7, GP25 }
 
 /*
@@ -35,7 +35,7 @@
 
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_DI_PIN GP5
-#    define RGB_MATRIX_LED_COUNT 84
+#    define RGB_MATRIX_LED_COUNT 105
 #    define RGB_MATRIX_KEYPRESSES                                      // Reacts to keypresses
 // #    define RGB_MATRIX_KEYRELEASES                                     // Reacts to keyreleases (instead of keypresses)
 // #    define RGB_MATRIX_FRAMEBUFFER_EFFECTS                             // Enables framebuffer effects
