@@ -39,6 +39,7 @@ enum Command {
 };
 
 bool input_disabled = false;
+bool jump_to_bootloader = false;
 
 #define CMD_LED_INDEX_ALL 0xFF
 
@@ -66,7 +67,6 @@ static bool keymap_set(uint8_t layer, uint8_t output, uint8_t input, uint16_t va
     return false;
 }
 
-static bool bootloader_reset = false;
 static bool bootloader_unlocked = false;
 
 void system76_ec_unlock(void) {
@@ -247,7 +247,7 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
         case CMD_RESET:
             if (bootloader_unlocked) {
                 data[1] = 0;
-                bootloader_reset = true;
+                jump_to_bootloader = true;
             }
             break;
         case CMD_KEYMAP_GET:
@@ -420,11 +420,4 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     }
 
     raw_hid_send(data, length);
-
-    if (bootloader_reset) {
-        // Give host time to read response
-        wait_ms(100);
-        // Jump to the bootloader
-        bootloader_jump();
-    }
 }

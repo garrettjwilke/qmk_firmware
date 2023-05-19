@@ -115,10 +115,19 @@ void matrix_init_kb(void) {
     system76_ec_rgb_layer(layer_state);
 }
 
+extern bool jump_to_bootloader;
+
 void matrix_scan_kb(void) {
     usb_mux_event();
 
     matrix_scan_user();
+}
+
+void matrix_scan_user(void) {
+    if (jump_to_bootloader) {
+        wait_ms(100);
+        bootloader_jump();
+    }
 }
 
 #define LEVEL(value) (uint8_t)(\
@@ -259,7 +268,7 @@ void bootloader_jump(void) {
     PORTE  = 0;
     PORTF  = 0;
 
-    usb_mux_init(false);
+    usb_mux_init(true);
 
     // finally, jump to bootloader
     asm volatile("jmp 0xFC00");
