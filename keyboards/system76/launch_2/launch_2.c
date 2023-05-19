@@ -89,10 +89,9 @@ void bootmagic_lite(void) {
     // reset the EEPROM valid state and jump to bootloader.
     if ( matrix_get_row(0) & (1<<0) ) {
         eeprom_reset();
-        usb_mux_init();
         bootloader_jump();
     } else {
-        usb_mux_init();
+        usb_mux_init(true);
     }
 }
 
@@ -259,6 +258,8 @@ void bootloader_jump(void) {
     PORTD  = 0;
     PORTE  = 0;
     PORTF  = 0;
+
+    usb_mux_init(false);
 
     // finally, jump to bootloader
     asm volatile("jmp 0xFC00");

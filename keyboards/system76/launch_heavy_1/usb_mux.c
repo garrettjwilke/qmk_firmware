@@ -425,7 +425,7 @@ void usb_mux_event(void) {
     }
 }
 
-void usb_mux_init(void) {
+void usb_mux_init(bool ensure_orientation) {
     // Run I2C bus at 100 KHz
     i2c_init(100000);
 
@@ -451,8 +451,10 @@ void usb_mux_init(void) {
 
     // Ensure orientation is correct after attaching hub
     //TODO: find reason why GPIO for sink orientation is reset
-    for(int i = 0; i < 100; i++) {
-        ptn5110_sink_set_orientation(&usb_sink);
-        _delay_ms(10);
+    if (ensure_orientation) {
+        for(int i = 0; i < 100; i++) {
+            ptn5110_sink_set_orientation(&usb_sink);
+            _delay_ms(10);
+        }
     }
 }
