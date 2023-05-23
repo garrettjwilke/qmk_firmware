@@ -4,6 +4,7 @@
 #include "launch_2.h"
 #include "usb_mux.h"
 #include "rgb_matrix.h"
+#include <avr/wdt.h>
 
 // USB hub reset on PA3
 #define GPIO_MASK_RESET_USB (1<<3)
@@ -62,9 +63,17 @@ bool eeprom_is_valid(void) {
             eeprom_read_byte(((void*)EEPROM_VERSION_ADDR)) == EEPROM_VERSION);
 }
 
+bool eeprom_is_use_bootloader(void) {
+    return (eeprom_read_byte(((void*)EEPROM_USE_BOOTLOADER_ADDR)) == 0x01);
+}
+
 void eeprom_set_valid(bool valid) {
     eeprom_update_word(((void*)EEPROM_MAGIC_ADDR), valid ? EEPROM_MAGIC : 0xFFFF);
     eeprom_update_byte(((void*)EEPROM_VERSION_ADDR), valid ? EEPROM_VERSION : 0xFF);
+}
+
+void eeprom_set_use_bootloader(bool use) {
+    eeprom_update_byte(((void*)EEPROM_USE_BOOTLOADER_ADDR), use ? 0x01 : 0x00);
 }
 
 void eeprom_reset(void) {
@@ -90,8 +99,11 @@ void bootmagic_lite(void) {
     if ( matrix_get_row(0) & (1<<0) ) {
         eeprom_reset();
         bootloader_jump();
+    } else if ( eeprom_is_use_bootloader() ) {
+        eeprom_set_use_bootloader(false);
+        bootloader_jump();
     } else {
-        usb_mux_init(true);
+        usb_mux_init();
     }
 }
 
@@ -126,7 +138,8 @@ void matrix_scan_kb(void) {
 void matrix_scan_user(void) {
     if (jump_to_bootloader) {
         wait_ms(100);
-        bootloader_jump();
+        eeprom_set_use_bootloader(true);
+        while (1);
     }
 }
 
@@ -268,7 +281,7 @@ void bootloader_jump(void) {
     PORTE  = 0;
     PORTF  = 0;
 
-    usb_mux_init(true);
+    usb_mux_init();
 
     // finally, jump to bootloader
     asm volatile("jmp 0xFC00");
