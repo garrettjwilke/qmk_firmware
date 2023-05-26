@@ -58,6 +58,8 @@ led_config_t g_led_config = { LAYOUT(
 
 static bool lctl_pressed, rctl_pressed = false;
 
+void application_check_jump(void);
+
 bool eeprom_is_valid(void) {
     return (eeprom_read_word(((void*)EEPROM_MAGIC_ADDR)) == EEPROM_MAGIC &&
             eeprom_read_byte(((void*)EEPROM_VERSION_ADDR)) == EEPROM_VERSION);
@@ -101,7 +103,8 @@ void bootmagic_lite(void) {
         bootloader_jump();
     } else if ( eeprom_is_use_bootloader() ) {
         eeprom_set_use_bootloader(false);
-        bootloader_jump();
+        wait_ms(2000);
+        application_check_jump();
     } else {
         usb_mux_init();
     }
@@ -130,17 +133,16 @@ void matrix_init_kb(void) {
 extern bool jump_to_bootloader;
 
 void matrix_scan_kb(void) {
-    usb_mux_event();
-
-    matrix_scan_user();
-}
-
-void matrix_scan_user(void) {
     if (jump_to_bootloader) {
         wait_ms(100);
         eeprom_set_use_bootloader(true);
+        wdt_enable(WDTO_250MS);
         while (1);
     }
+
+    usb_mux_event();
+
+    matrix_scan_user();
 }
 
 #define LEVEL(value) (uint8_t)(\
@@ -285,4 +287,47 @@ void bootloader_jump(void) {
 
     // finally, jump to bootloader
     asm volatile("jmp 0xFC00");
+}
+
+void application_check_jump(void) {
+
+    // Disable all peripherals on AT90USB646
+    UDCON = 1;
+    USBCON = (1<<FRZCLK);  // disable USB
+    UCSR1B = 0;
+    _delay_ms(5);
+
+    EIMSK  = 0;
+    PCICR  = 0;
+    SPCR   = 0;
+    ACSR   = 0;
+    EECR   = 0;
+    ADCSRA = 0;
+    TIMSK0 = 0;
+    TIMSK1 = 0;
+    TIMSK2 = 0;
+    TIMSK3 = 0;
+    UCSR1B = 0;
+    TWCR   = 0;
+    DDRA   = GPIO_MASK_RESET_USB;
+    DDRB   = 0;
+    DDRC   = 0;
+    DDRD   = 0;
+    DDRE   = 0;
+    DDRF   = 0;
+    PORTA  = GPIO_MASK_RESET_USB;
+    PORTB  = 0;
+    PORTC  = 0;
+    PORTD  = 0;
+    PORTE  = 0;
+    PORTF  = 0;
+
+    usb_mux_init();
+
+    // finally, jump to application_jump_check
+    // Different from the bootloader, application_jump_check
+    // is a specific function lin lib LUFA's DFU bootlaoder
+    // that needs to be called if jumping to bootloader after
+    // watchdog reset rather than at controller init.
+    asm volatile("jmp 0xF0A4");
 }
