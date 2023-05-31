@@ -72,7 +72,6 @@
 // and avoid loading invalid data from the EEPROM
 #define EEPROM_VERSION 0x02
 #define EEPROM_VERSION_ADDR (EEPROM_MAGIC_ADDR + 2)
-#define EEPROM_USE_BOOTLOADER_ADDR (EEPROM_MAGIC_ADDR + 3)
 // } EEPROM
 
 // Dynamic keyboard support {

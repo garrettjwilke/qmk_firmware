@@ -69,17 +69,9 @@ bool eeprom_is_valid(void) {
             eeprom_read_byte(((void*)EEPROM_VERSION_ADDR)) == EEPROM_VERSION);
 }
 
-bool eeprom_is_use_bootloader(void) {
-    return (eeprom_read_byte(((void*)EEPROM_USE_BOOTLOADER_ADDR)) == 0x01);
-}
-
 void eeprom_set_valid(bool valid) {
     eeprom_update_word(((void*)EEPROM_MAGIC_ADDR), valid ? EEPROM_MAGIC : 0xFFFF);
     eeprom_update_byte(((void*)EEPROM_VERSION_ADDR), valid ? EEPROM_VERSION : 0xFF);
-}
-
-void eeprom_set_use_bootloader(bool use) {
-    eeprom_update_byte(((void*)EEPROM_USE_BOOTLOADER_ADDR), use ? 0x01 : 0x00);
 }
 
 void eeprom_reset(void) {
@@ -105,10 +97,6 @@ void bootmagic_lite(void) {
     if ( matrix_get_row(0) & (1<<0) ) {
         eeprom_reset();
         bootloader_jump();
-    } else if ( eeprom_is_use_bootloader() ) {
-        eeprom_set_use_bootloader(false);
-        wait_ms(2000);
-        application_check_jump();
     } else {
         usb_mux_init();
     }
@@ -139,9 +127,7 @@ extern bool jump_to_bootloader;
 void matrix_scan_kb(void) {
     if (jump_to_bootloader) {
         wait_ms(100);
-        eeprom_set_use_bootloader(true);
-        wdt_enable(WDTO_250MS);
-        while (1);
+        application_check_jump();
     }
 
     usb_mux_event();
