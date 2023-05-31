@@ -420,4 +420,15 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     }
 
     raw_hid_send(data, length);
+
+// Launch_2 and launch_heavy_1 handle bootloader jump differently
+// in their own .c files. Other keyboards should jump here.
+#if PRODUCT_ID != 0x0006 && PRODUCT_ID != 0x0007
+    if (jump_to_bootloader) {
+        // Give host time to read response
+        wait_ms(100);
+        // Jump to the bootloader
+        bootloader_jump();
+    }
+#endif
 }
