@@ -425,16 +425,16 @@ void usb_mux_event(void) {
     }
 }
 
-void usb_mux_init(void) {
+void usb_mux_init() {
     // Run I2C bus at 100 KHz
     i2c_init(100000);
 
     // Sleep 10 ms, bring hub out of reset
-    _delay_ms(10);
+    wait_ms(10);
     setPinOutput(GPIO_RESET_USB);
     writePinHigh(GPIO_RESET_USB);
     // Per Microchip support, wait 100 ms after reset with I2C idle
-    _delay_ms(100);
+    wait_ms(100);
 
     // Set up hub
     usb7006_init(&usb_hub);
@@ -453,6 +453,6 @@ void usb_mux_init(void) {
     //TODO: find reason why GPIO for sink orientation is reset
     for(int i = 0; i < 100; i++) {
         ptn5110_sink_set_orientation(&usb_sink);
-        _delay_ms(10);
+        wait_ms(10);
     }
 }
