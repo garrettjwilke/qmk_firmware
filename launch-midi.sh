@@ -23,7 +23,7 @@ then
     ARCH_CHECK=$(cat /etc/os-release | grep "^NAME" | sed 's/NAME\=//g' | tr -d \")
     if [[ "$ARCH_CHECK" == "Arch Linux" ]]
     then
-      sudo pacman -S qmk --noconfirm
+      sudo pacman -S qmk usbutils wget --noconfirm
     else
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
