@@ -32,6 +32,57 @@ then
 fi
 }
 
+build-firmware() {
+
+KEYBOARD_LIST="launch_1 launch_2 launch_3 launch_lite_1 launch_heavy_1 launch_heavy_3"
+
+make clean
+
+for i in $KEYBOARD_LIST
+do
+  echo ""
+  echo "building piano firmware for $i"
+  echo ""
+  sleep 1
+  make system76/${i}:midi_piano
+
+  # launch_lite_ does not have enough keys for ghoti layout. skipping launch_lite_*
+  if [[ "$i" != "launch_lite_1" ]]
+  then
+    echo ""
+    echo "building ghoti firmware for $i"
+    echo ""
+    sleep 1
+    make system76/${i}:midi_ghoti
+  fi
+done
+
+
+if [ -d $PROJECT_NAME ]
+then
+  rm -rf $PROJECT_NAME*
+fi
+
+mkdir $PROJECT_NAME
+
+mv system76_launch* ${PROJECT_NAME}/
+
+echo "Build Date: $DATE_NOW" > ${PROJECT_NAME}.list
+
+echo "" >> ${PROJECT_NAME}.list
+pushd $PROJECT_NAME
+sha256sum system76_launch_* >> ../${PROJECT_NAME}.list
+popd
+
+tar -czf ${PROJECT_NAME}.tar.gz $PROJECT_NAME ${PROJECT_NAME}.list
+
+echo ""
+echo "all firmware built to $PROJECT_NAME directory"
+echo "${PROJECT_NAME}.tar.gz created"
+echo ""
+exit
+}
+
 help-menu() {
 cat << EOF
 
@@ -168,6 +219,10 @@ then
 elif [[ "$ARGUMENT" == "--test" ]]
 then
   test-mode
+elif [[ "$ARGUMENT" == "--build" ]]
+then
+  build-firmware
+  exit
 elif [[ "$ARGUMENT" == "--help" ]] || [[ "$ARGUMENT" == "-h" ]]
 then
   help-menu
