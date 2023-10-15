@@ -125,13 +125,6 @@ QMK_CHECK=$(which qmk)
 if [[ "$QMK_CHECK" == "" ]]
 then
 clear
-PIP_CHECK=$(which pip)
-if [[ "$PIP_CHECK" == "" ]]
-then
-  echo "pip is not installed. install pip."
-  echo ""
-  exit
-fi
 
 cat << EOF
 
