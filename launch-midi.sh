@@ -20,7 +20,6 @@ if [[ "$QMK_CHECK" == "" ]]
 then
   if [[ "$OS" == "linux" ]]
   then
-    python3 -m ensurepip
     python3 -m pip install qmk
     PATH=$PATH:$HOME/.local/bin
     echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
