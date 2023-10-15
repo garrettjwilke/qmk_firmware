@@ -20,10 +20,16 @@ if [[ "$QMK_CHECK" == "" ]]
 then
   if [[ "$OS" == "linux" ]]
   then
-    python3 -m pip install qmk
-    PATH=$PATH:$HOME/.local/bin
-    echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
-    source ~/.bashrc
+    ARCH_CHECK=$(cat /etc/os-release | grep "^NAME" | sed 's/NAME\=//g' | tr -d \")
+    if [[ "$ARCH_CHECK" == "Arch Linux" ]]
+    then
+      pacman -S qmk
+    else
+      python3 -m pip install qmk
+      PATH=$PATH:$HOME/.local/bin
+      echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
+      source ~/.bashrc
+    fi
   elif [[ "$OS" == "mac" ]]
   then
     brew install qmk
