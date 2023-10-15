@@ -173,11 +173,8 @@ mkdir $PROJECT_NAME
 
 mv system76_launch* ${PROJECT_NAME}/
 
-echo "Build Date: $DATE_NOW" > ${PROJECT_NAME}.list
-
-echo "" >> ${PROJECT_NAME}.list
 pushd $PROJECT_NAME
-sha256sum system76_launch_* >> ../${PROJECT_NAME}.list
+sha256sum system76_launch_* > ../${PROJECT_NAME}.list
 popd
 
 tar -czf ${PROJECT_NAME}.tar.gz $PROJECT_NAME ${PROJECT_NAME}.list
