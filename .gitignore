@@ -4,6 +4,10 @@
 *~
 .DS_Store
 ._*
+*.list
+launch-firmware-midi/
+*.tar.gz
+
 
 # Merge files
 *.orig

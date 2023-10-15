@@ -18,6 +18,7 @@ WS2812_DRIVER = vendor
 RGB_MATRIX_CUSTOM_KB = yes  # Custom keyboard effects
 AUDIO_ENABLE = no           # Audio output
 LTO_ENABLE = yes            # Link-time optimization for smaller binary
+MIDI_ENABLE = yes
 
 # Add System76 EC command interface as well as I2C and USB mux drivers
 SRC += system76_ec.c usb_mux.c
