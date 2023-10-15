@@ -21,10 +21,10 @@ then
   if [[ "$OS" == "linux" ]]
   then
     python3 -m ensurepip
-    python3 pip install qmk
+    python3 -m pip install qmk
     PATH=$PATH:$HOME/.local/bin
     echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
-    echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.zshrc
+    source ~/.bashrc
   elif [[ "$OS" == "mac" ]]
   then
     brew install qmk
