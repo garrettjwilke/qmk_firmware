@@ -31,6 +31,11 @@ then
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
       source ~/.bashrc
+    else
+      echo ""
+      echo "QMK not installed. install using your package manager or pip."
+      echo ""
+      exit
     fi
   elif [[ "$OS" == "mac" ]]
   then
