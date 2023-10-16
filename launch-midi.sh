@@ -288,7 +288,7 @@ clear
 if [[ "$KEYBOARD" == "launch_lite_1" ]]
 then
   FIRMWARE=piano
-  break  
+  break
 fi
 
 
