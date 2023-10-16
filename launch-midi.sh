@@ -25,7 +25,7 @@ then
     then
       sudo pacman -Syy
       sudo pacman -S qmk usbutils wget --noconfirm
-    elif [[ "$DISTRO_CHECK" == "Ubuntu Linux" ]]
+    elif [[ "$DISTRO_CHECK" == "Ubuntu" ]] || [[ "$DISTRO_CHECK" == "Pop!_OS" ]]
     then
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
