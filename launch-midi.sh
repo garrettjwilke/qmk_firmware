@@ -20,11 +20,13 @@ if [[ "$QMK_CHECK" == "" ]]
 then
   if [[ "$OS" == "linux" ]]
   then
-    ARCH_CHECK=$(cat /etc/os-release | grep "^NAME" | sed 's/NAME\=//g' | tr -d \")
-    if [[ "$ARCH_CHECK" == "Arch Linux" ]]
+    DISTRO_CHECK=$(cat /etc/os-release | grep "^NAME" | sed 's/NAME\=//g' | tr -d \")
+    if [[ "$DISTRO_CHECK" == "Arch Linux" ]] || [[ "$DISTRO_CHECK" == "Manjaro Linux" ]]
     then
+      sudo pacman -Syy
       sudo pacman -S qmk usbutils wget --noconfirm
-    else
+    elif [[ "$DISTRO_CHECK" == "Ubuntu Linux" ]]
+    then
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
