@@ -29,8 +29,7 @@ then
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
-      exec bash
-      #source ~/.bashrc
+      source ~/.bashrc
     else
       echo ""
       echo "QMK not installed. install using your package manager or pip."
@@ -252,6 +251,7 @@ then
   echo ""
   echo "Launch Keyboard not connected."
   echo ""
+  exec bash
   exit
 fi
 
