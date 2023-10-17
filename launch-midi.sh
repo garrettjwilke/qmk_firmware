@@ -155,7 +155,6 @@ make clean
 for i in $KEYBOARD_LIST
 do
   message-box "building midi_piano firmware for $i"
-  echo ""
   sleep 1
   make system76/${i}:midi_piano
   if [ $? -gt 0 ]
@@ -170,7 +169,6 @@ do
   if [[ "$i" != "launch_lite_1" ]]
   then
     message-box "building midi_ghoti firmware for $i"
-    echo ""
     sleep 1
     make system76/${i}:midi_ghoti
     if [ $? -gt 0 ]
@@ -210,14 +208,14 @@ exit
 
 if [[ "$ARGUMENT" == "--git" ]]
 then
-  echo ""
+  message-box "Push all changes to git"
   echo "Push to git? (y/n)"
   echo ""
   read GIT
   case $GIT in
-    Y|y|Yes|YES|yes) git add .; git commit -m "launch_midi"; git push; echo ""; echo "pushed to git"; echo ""; exit;;
-    N|n|No|NO|no) echo ""; echo "not pushing to git"; echo ""; exit;;
-    *) echo ""; echo "invalid input. exiting"; echo ""; exit;;
+    Y|y|Yes|YES|yes) git add .; git commit -m "launch_midi"; git push; message-box "pushed to git"; echo ""; exit;;
+    N|n|No|NO|no) message-box "not pushing to git"; echo ""; exit;;
+    *) message-box "invalid input. exiting"; echo ""; exit;;
   esac
 elif [[ "$ARGUMENT" == "--build" ]]
 then
