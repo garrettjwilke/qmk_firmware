@@ -16,3 +16,4 @@ git clone https://github.com/garrettjwilke/qmk_firmware && cd qmk_firmware
 ```
 
 > This script will install the required tools, build the firmware, and then flash the firmware to your Launch Keyboard.
+The first time running the script will take a while because it will download and install all required packages to build and flash.
