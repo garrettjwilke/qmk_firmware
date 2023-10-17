@@ -19,6 +19,12 @@ cat << EOF
 EOF
 }
 
+BRANCH_CHECK=$(git status | grep "On branch launch_midi")
+if [[ "$BRANCH_CHECK" == "" ]]
+then
+  git checkout launch_midi
+fi
+
 OS_CHECK=$(uname -a | awk '{print $1}')
 case $OS_CHECK in
   Darwin) OS=mac;;
@@ -288,6 +294,8 @@ cat << EOF
             - Steep learning curve.
           - 32 Drum Pad Layer
 
+    [ 3 ] Factory Default Firmware
+
     [ q ] Quit
 
      Press 1 or 2 - (q to quit):
@@ -298,6 +306,7 @@ EOF
   case $LAYOUT in
     1) FIRMWARE=midi_piano; break;;
     2) FIRMWARE=midi_ghoti; break;;
+    3) FIRMWARE=default; break;;
     q|Q|quit|Quit|QUIT) exit;;
     *) echo "invalid input";;
   esac
@@ -308,6 +317,9 @@ if [[ "$FIRMWARE" == "" ]]
 then
   message-box "Error. Firmware select failed."
   exit
+elif [[ "$FIRMWARE" == "default" ]]
+then
+  git checkout launch-3
 fi
 
 
