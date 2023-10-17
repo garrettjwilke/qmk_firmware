@@ -329,18 +329,12 @@ cat << EOF
   Keyboard: $KEYBOARD
   Firmware: $FIRMWARE
 
-  This will not start flashing until the Launch is in bootloader mode.
-  Follow the instructions below to put your Launch Keyboard in bootloader mode.
-
-    1. Unplug Launch
+    1. Press ENTER then unplug your $KEYBOARD
     2. Press and hold the ESC key
     3. Plug in Launch while holding the ESC key
-    4. Release the ESC key when the keyboard is recognized (About 2-3 seconds after plugging in)
+    4. Release the ESC key 2 or 3 seconds after plugging in.
 
-  The script will verify the firmware and then
-  attempt to flash once the keyboard is in bootloader mode.
-
-  Press ENTER to continue - (q to quit)
+    (or press q to quit)
 
 EOF
 
