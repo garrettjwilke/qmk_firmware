@@ -1,26 +1,18 @@
-# System76 QMK MIDI Firmware for Launch_1 Keyboards
+# System76 QMK MIDI Firmware for Launch Keyboards
 
 Custom MIDI support for System76 Launch Keyboards.
 
 ## Installation
-1) Clone the QMK Firmware Repo and update the submodules:
+1) Clone the Launch MIDI Firmware repo:
 
 ```
-git clone https://github.com/garrettjwilke/qmk_firmware
-cd qmk_firmware
-git submodules init
-git submodules update
+git clone https://github.com/garrettjwilke/qmk_firmware && cd qmk_firmware
 ```
 
-2) Install QMK and the required dependencies:
+2) Run the `launch_midi.sh` script:
 
-```
-./util/qmk_install.sh
-```
-
-3) Build Launch MIDI firmware:
-```
-./build.sh
+ ```
+./launch-midi.sh
 ```
 
-This will produce all MIDI firmware and output the sha256sum of each firmware to a file called `firmware.list`.
+> This script will install the required tools, build the firmware, and then flash the firmware to your Launch Keyboard.
