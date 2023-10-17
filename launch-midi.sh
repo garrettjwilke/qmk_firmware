@@ -345,6 +345,9 @@ cat << EOF
 EOF
 
 read INPUT
+case $INPUT in
+  q|Q|quit|Quit|QUIT) exit;;
+esac
 
 make system76/${KEYBOARD}:${FIRMWARE}:dfu
 
