@@ -26,6 +26,7 @@ case $OS_CHECK in
 esac
 
 install-deps() {
+BASHRC_CHECK=$(cat ~/.bashrc | grep "\.local\/bin")
 ./util/qmk_install.sh
 git submodule init
 git submodule update
@@ -45,8 +46,8 @@ then
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
     else
-      echo ""
-      echo "QMK not installed. install using your package manager or pip."
+      message-box "QMK not installed."
+      echo "Install QMK using pip or your package manager."
       echo ""
       exit
     fi
@@ -134,8 +135,7 @@ do
   DEP=$(which $i)
   if [[ "$DEP" == "" ]]
   then
-    echo ""
-    echo "$i is not installed."
+    message-box "$i is not installed."
     if [[ "$i" == "avrdude" ]] || [[ "$i" == "dfu-programmer" ]] || [[ "$i" == "dfu-util" ]]
     then
       echo "$i can be installed by running:"
@@ -155,15 +155,13 @@ make clean
 
 for i in $KEYBOARD_LIST
 do
-  echo ""
-  echo "building piano firmware for $i"
+  message-box "building piano firmware for $i"
   echo ""
   sleep 1
   make system76/${i}:midi_piano
   if [ $? -gt 0 ]
   then
-    echo ""
-    echo "error building."
+    message-box "Error building MIDI Firmware."
     echo "Keyboard: $i"
     echo "Firmware: midi_piano"
     echo ""
@@ -179,8 +177,7 @@ do
     make system76/${i}:midi_ghoti
     if [ $? -gt 0 ]
     then
-      echo ""
-      echo "error building."
+      message-box "Error building MIDI Firmware."
       echo "Keyboard: $i"
       echo "Firmware: midi_piano"
       echo ""
@@ -205,7 +202,7 @@ popd
 
 tar -czf ${PROJECT_NAME}.tar.gz $PROJECT_NAME ${PROJECT_NAME}.list
 
-echo ""
+message-box "Firmware build complete"
 echo "all firmware built to $PROJECT_NAME directory"
 echo "${PROJECT_NAME}.tar.gz created"
 echo ""
@@ -235,8 +232,8 @@ elif [[ "$ARGUMENT" == "" ]]
 then
   :
 else
-  echo ""
-  echo "invalid flag. run with --help to see options"
+  message-box "Invalid flag: $ARGUMENT"
+  echo "Run with --help to see options"
   echo ""
   exit
 fi
@@ -258,9 +255,7 @@ fi
 
 if [[ "$KEYBOARD" == "" ]]
 then
-  echo ""
-  echo "Launch Keyboard not connected."
-  echo ""
+  message-box "Launch Keyboard not connected."
   exit
 fi
 
@@ -314,9 +309,7 @@ done
 
 if [[ "$FIRMWARE" == "" ]]
 then
-  echo ""
-  echo "ERROR - firmware select failed. exiting"
-  echo ""
+  message-box "Error. Firmware select failed."
   exit
 fi
 
@@ -328,9 +321,7 @@ make system76/${KEYBOARD}:${FIRMWARE}
 
 if [ $? -gt 0 ]
 then
-  echo ""
-  echo "build failed."
-  echo ""
+  message-box "Build failed"
   exit
 fi
 
@@ -359,3 +350,11 @@ EOF
 read INPUT
 
 make system76/${KEYBOARD}:${FIRMWARE}:dfu
+
+if [ $? -gt 0 ]
+then
+  message-box "Flash failed"
+else
+  message-box "Flashed MIDI Firmware to $KEYBOARD"
+fi
+exit
