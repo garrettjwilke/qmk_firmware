@@ -38,7 +38,9 @@ then
     fi
   elif [[ "$OS" == "mac" ]]
   then
+    echo "qmk not installed"
     brew install qmk
+    exit
   fi
 fi
 }
