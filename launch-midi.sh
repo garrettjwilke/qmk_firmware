@@ -42,7 +42,6 @@ then
   then
     echo "qmk not installed"
     brew install qmk
-    exit
   fi
 fi
 }
@@ -86,6 +85,7 @@ exit
 }
 
 qmk-check() {
+PATH=$PATH:$HOME/.local/bin
 # check for qmk
 QMK_CHECK=$(which qmk)
 if [[ "$QMK_CHECK" == "" ]]
@@ -121,7 +121,7 @@ fi
 dep-test() {
 qmk-check
 
-for i in wget sha256sum lsusb tar avrdude dfu-programmer dfu-util
+for i in wget sha256sum tar avrdude dfu-programmer dfu-util
 do
   DEP=$(which $i)
   if [[ "$DEP" == "" ]]
