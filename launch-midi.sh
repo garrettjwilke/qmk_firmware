@@ -164,7 +164,15 @@ do
   echo ""
   sleep 1
   make system76/${i}:midi_piano
-
+  if [ $? -gt 0 ]
+  then
+    echo ""
+    echo "error building."
+    echo "Keyboard: $i"
+    echo "Firmware: midi_piano"
+    echo ""
+    exit
+  fi
   # launch_lite_ does not have enough keys for ghoti layout. skipping launch_lite_*
   if [[ "$i" != "launch_lite_1" ]]
   then
@@ -173,6 +181,15 @@ do
     echo ""
     sleep 1
     make system76/${i}:midi_ghoti
+    if [ $? -gt 0 ]
+    then
+      echo ""
+      echo "error building."
+      echo "Keyboard: $i"
+      echo "Firmware: midi_piano"
+      echo ""
+      exit
+    fi
   fi
 done
 
