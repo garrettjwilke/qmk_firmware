@@ -9,6 +9,7 @@ ARGUMENT=$1
 message-box() {
 MESSAGE=$1
 cat << EOF
+
   ---------------------------------
 
     $MESSAGE
