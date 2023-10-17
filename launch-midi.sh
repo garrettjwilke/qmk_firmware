@@ -290,7 +290,7 @@ cat << EOF
 
     [ q ] Quit
 
-     Press 1 or 2 (q to quit):
+     Press 1 or 2 - (q to quit):
 
 EOF
 
@@ -340,7 +340,7 @@ cat << EOF
   The script will verify the firmware and then
   attempt to flash once the keyboard is in bootloader mode.
 
-  Press ENTER to continue
+  Press ENTER to continue - (q to quit)
 
 EOF
 
