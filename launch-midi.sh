@@ -58,9 +58,11 @@ then
 fi
 clear
 message-box "All tools installed"
-echo "Run the script again to build and flash MIDI firmware."
-exec bash
-exit
+sleep 2
+if [[ "$OS" == "linux" ]]
+then
+  exec bash ./launch-midi.sh
+fi
 }
 
 
@@ -259,7 +261,6 @@ then
   echo ""
   echo "Launch Keyboard not connected."
   echo ""
-  exec bash
   exit
 fi
 
