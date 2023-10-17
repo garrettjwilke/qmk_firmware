@@ -332,6 +332,11 @@ make system76/${KEYBOARD}:${FIRMWARE}
 
 if [ $? -gt 0 ]
 then
+  if [[ "$FIRMWARE" == "default" ]]
+  then
+    git stash
+    git checkout launch_midi
+  fi
   message-box "Build failed"
   exit
 fi
@@ -360,8 +365,20 @@ make system76/${KEYBOARD}:${FIRMWARE}:dfu
 
 if [ $? -gt 0 ]
 then
+  if [[ "$FIRMWARE" == "default" ]]
+  then
+    git stash
+    git checkout launch_midi
+  fi
   message-box "Flash failed"
 else
+  if [[ "$FIRMWARE" == "default" ]]
+  then
+    git stash
+    git checkout launch_midi
+  fi
+  clear
   message-box "Flashed MIDI Firmware to $KEYBOARD"
 fi
+
 exit
