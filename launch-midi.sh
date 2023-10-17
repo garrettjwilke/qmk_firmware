@@ -45,15 +45,21 @@ then
 fi
 }
 
-help-menu() {
+message-box() {
+MESSAGE=$1
 cat << EOF
+  ---------------------------------
 
-  | --------------------------------- |
-  |                                   |
-  |        Launch Keyboard MIDI       |
-  |                                   |
-  | --------------------------------- |
+    $MESSAGE
 
+  ---------------------------------
+
+EOF
+}
+
+help-menu() {
+message-box "Launch Keyboard MIDI Firmware"
+cat << EOF
   System76 Launch Keyboard MIDI Firmware
 
   What this script does:
@@ -71,11 +77,7 @@ cat << EOF
             * Each column creates a perfect 4th of the adjacent column to the right.
             * Has 32 Pad Drum Layer.
 
-    3 - Download and flash MIDI Firmware to Launch Keyboard.
-
-  If you are having issues, run the script with the --test flag:
-
-    ./flash.sh --test
+    3 - Build and ask to flash MIDI Firmware to Launch Keyboard.
 
 EOF
 exit
@@ -87,20 +89,12 @@ QMK_CHECK=$(which qmk)
 if [[ "$QMK_CHECK" == "" ]]
 then
 clear
-
-cat << EOF
-
-  | --------------------------------- |
-  |                                   |
-  |        QMK is not installed       |
-  |                                   |
-  | --------------------------------- |
-
-  Would you like to install the QMK tools? (y/n):
-EOF
+message-box "QMK is not installed."
+echo "Would you like to install QMK? (y/n):"
+echo ""
 read yn
 case $yn in
-  y|Y|yes|Yes|YES) install-deps;;  
+  y|Y|yes|Yes|YES) install-deps;;
   n|N|no|No|NO) exit;;
 esac
 fi
@@ -110,20 +104,12 @@ QMK_SETUP=$(qmk -h | grep flash)
 if [[ "$QMK_SETUP" == "" ]]
 then
 clear
-cat << EOF
-
-  | --------------------------------- |
-  |                                   |
-  |            Run QMK Setup          |
-  |                                   |
-  | --------------------------------- |
-
-  QMK is installed but the required tools are not installed.
-  Would you like to install the QMK tools? (y/n):
-EOF
+message-box "Run qmk setup"
+echo "QMK is installed but the required tools are not installed."
+echo "Would you like to install the QMK tools? (y/n):"
 read yn
 case $yn in
-  y|Y|yes|Yes|YES) qmk setup;;  
+  y|Y|yes|Yes|YES) qmk setup;;
   n|N|no|No|NO) exit;;
 esac
 fi
@@ -216,13 +202,6 @@ echo ""
 exit
 }
 
-test-mode() {
-dep-test
-echo ""
-echo "fill tests here"
-echo ""
-exit
-}
 
 if [[ "$ARGUMENT" == "--git" ]]
 then
@@ -235,9 +214,6 @@ then
     N|n|No|NO|no) echo ""; echo "not pushing to git"; echo ""; exit;;
     *) echo ""; echo "invalid input. exiting"; echo ""; exit;;
   esac
-elif [[ "$ARGUMENT" == "--test" ]]
-then
-  test-mode
 elif [[ "$ARGUMENT" == "--build" ]]
 then
   build-firmware
@@ -273,24 +249,13 @@ fi
 if [[ "$KEYBOARD" == "" ]]
 then
   echo ""
-  echo "Launch Keyboard not connected. run with --test"
+  echo "Launch Keyboard not connected."
   echo ""
   exit
 fi
 
 clear
-cat << EOF
-
-  | --------------------------------- |
-  |                                   |
-  |          Keyboard Detected        |
-  |                                   |
-  | --------------------------------- |
-
-          Keyboard: $KEYBOARD
-
-EOF
-
+message-box "Keyboard Detected - $KEYBOARD"
 sleep 2
 
 # ask user which version they want to flash
@@ -305,16 +270,9 @@ then
   break
 fi
 
-
+message-box "Select a firmware to flash"
 cat << EOF
-
     Keyboard: $KEYBOARD
-
-    | --------------------------------- |
-    |                                   |
-    |    Select a firmware to flash     |
-    |                                   |
-    | --------------------------------- |
 
     [ 1 ] Piano with 32 Drum Pads
           - Keys are arranged like a piano
@@ -368,18 +326,13 @@ fi
 
 # instruct user how to put keyboard into DFU
 clear
+message-box "Put Launch into bootloader mode"
 cat << EOF
-
   Keyboard: $KEYBOARD
+  Firmware: $FIRMWARE
 
-  | --------------------------------- |
-  |                                   |
-  |      Put Launch into DFU Mode     |
-  |                                   |
-  | --------------------------------- |
-
-  This will not start flashing until the Launch is in DFU Mode.
-  Follow the instructions below to put your Launch Keyboard in DFU mode.
+  This will not start flashing until the Launch is in bootloader mode.
+  Follow the instructions below to put your Launch Keyboard in bootloader mode.
 
     1. Unplug Launch
     2. Press and hold the ESC key
@@ -387,7 +340,7 @@ cat << EOF
     4. Release the ESC key when the keyboard is recognized (About 2-3 seconds after plugging in)
 
   The script will verify the firmware and then
-  attempt to flash once the keyboard is in DFU mode.
+  attempt to flash once the keyboard is in bootloader mode.
 
   Press ENTER to continue
 
