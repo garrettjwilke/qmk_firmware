@@ -154,7 +154,7 @@ make clean
 
 for i in $KEYBOARD_LIST
 do
-  message-box "building piano firmware for $i"
+  message-box "building midi_piano firmware for $i"
   echo ""
   sleep 1
   make system76/${i}:midi_piano
@@ -169,8 +169,7 @@ do
   # launch_lite_ does not have enough keys for ghoti layout. skipping launch_lite_*
   if [[ "$i" != "launch_lite_1" ]]
   then
-    echo ""
-    echo "building ghoti firmware for $i"
+    message-box "building midi_ghoti firmware for $i"
     echo ""
     sleep 1
     make system76/${i}:midi_ghoti
