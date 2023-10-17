@@ -4,13 +4,12 @@
 # https://github.com/garrettjwilke/qmk_firmware/releases/latest
 
 PROJECT_NAME=launch-midi-firmware
-OFFLINE=false
 ARGUMENT=$1
 OS_CHECK=$(uname -a | awk '{print $1}')
 case $OS_CHECK in
   Darwin) OS=mac;;
   Linux) OS=linux;;
-  *) echo "OS not Linux or Mac. exiting"; exit;;
+  *) echo "This script requires Linux. exiting"; exit;;
 esac
 
 install-deps() {
@@ -43,7 +42,6 @@ then
   fi
 fi
 }
-
 
 help-menu() {
 cat << EOF
@@ -202,7 +200,7 @@ exit
 test-mode() {
 dep-test
 echo ""
-echo "all tests passed."
+echo "fill tests here"
 echo ""
 exit
 }
@@ -228,9 +226,6 @@ then
 elif [[ "$ARGUMENT" == "--help" ]] || [[ "$ARGUMENT" == "-h" ]]
 then
   help-menu
-elif [[ "$ARGUMENT" == "--offline" ]]
-then
-  OFFLINE=true
 elif [[ "$ARGUMENT" == "" ]]
 then
   :
@@ -287,7 +282,7 @@ clear
 # launch_lite only has piano layout
 if [[ "$KEYBOARD" == "launch_lite_1" ]]
 then
-  FIRMWARE=piano
+  FIRMWARE=midi_piano
   break
 fi
 
@@ -322,61 +317,13 @@ EOF
 
   read LAYOUT
   case $LAYOUT in
-    1) FIRMWARE=piano; break;;
-    2) FIRMWARE=ghoti; break;;
+    1) FIRMWARE=midi_piano; break;;
+    2) FIRMWARE=midi_ghoti; break;;
     q|Q|quit|Quit|QUIT) exit;;
     *) echo "invalid input";;
   esac
 done
 
-download-firmware() {
-  rm -rf ${PROJECT_NAME}*
-  wget -q --show-progress https://github.com/garrettjwilke/qmk_firmware/releases/download/launch_midi/${PROJECT_NAME}.tar.gz
-  tar -xzf ${PROJECT_NAME}.tar.gz
-  rm ${PROJECT_NAME}.tar.gz
-}
-hash-check() {
-while true
-do
-  if [[ "$OFFLINE" == "true" ]]
-  then
-    break
-  fi
-  # check firmware list sha256sum against newest version from git
-  GIT_HASH=$(wget -q --show-progress -O - https://github.com/garrettjwilke/qmk_firmware/releases/download/launch_midi/${PROJECT_NAME}.list | sha256sum | awk '{print $1}')
-  LOCAL_HASH=$(sha256sum ${PROJECT_NAME}.list | awk '{print $1}')
-
-  echo "checking firmware hash."
-  sleep 1
-
-  if [[ "$LOCAL_HASH" == "$GIT_HASH" ]]
-  then
-    break
-  else
-    echo ""
-    echo "hash does not match. downloading firmware."
-    echo ""
-    sleep 1
-    clear
-    echo ""
-    echo "downloading firmware"
-    echo ""
-    download-firmware
-  fi
-done
-}
-
-# check if firmware directory exists
-if ! [ -d $PROJECT_NAME ]
-then
-  download-firmware
-  hash-check
-fi
-
-hash-check
-
-FIRMWARE=$(cat ${PROJECT_NAME}.list | grep $KEYBOARD | grep $FIRMWARE | awk '{print $2}')
-FIRMWARE_SHA256=$(cat ${PROJECT_NAME}.list | grep $KEYBOARD | grep $FIRMWARE | awk '{print $1}')
 
 if [[ "$FIRMWARE" == "" ]]
 then
@@ -387,46 +334,18 @@ then
 fi
 
 
-# check for firmware and download if not found
-# also check hash of firmware and download if incorrect
-while true
-do
-  if ! [ -f ${PROJECT_NAME}/$FIRMWARE ]
-  then
-    if [[ "$OFFLINE" == "true" ]]
-    then
-      echo ""
-      echo "firmware file does not exist. Offline Mode enabled. exiting"
-      echo ""
-      exit
-    fi
-    echo ""
-    echo "Downloading Launch MIDI firmware files..."
-    echo ""
-    download-firmware
-    hash-check
-  fi
+# build firmware
 
-  # check sha256sum of downloaded firmware before flashing
+make clean
+make system76/${KEYBOARD}:${FIRMWARE}
 
-  SHA256_TEST=$(sha256sum ${PROJECT_NAME}/$FIRMWARE | awk '{print $1}')
-  if [[ "$SHA256_TEST" != $FIRMWARE_SHA256 ]]
-  then
-    if [[ "$OFFLINE" == "true" ]]
-    then
-      echo ""
-      echo "sha256sum hash check failed. Offline Mode enabled. exiting"
-      echo ""
-      exit
-    fi
-    echo "firmware hash does not match. deleting and downloading firmware again."
-    download-firmware
-    hash-check
-    sleep 2
-  else
-    break
-  fi
-done
+if [ $? -gt 0 ]
+then
+  echo ""
+  echo "build failed."
+  echo ""
+  exit
+fi
 
 # instruct user how to put keyboard into DFU
 clear
@@ -448,50 +367,13 @@ cat << EOF
     3. Plug in Launch while holding the ESC key
     4. Release the ESC key when the keyboard is recognized (About 2-3 seconds after plugging in)
 
-EOF
+  The script will verify the firmware and then
+  attempt to flash once the keyboard is in DFU mode.
 
-while true
-do
-  # comment the break line below to enable DFU check
-  break
-  if [[ "$OS" == "linux" ]]
-  then
-    DFU_CHECK=$(lsusb | grep "atmega32u4")
-  elif [[ "$OS" == "mac" ]]
-  then
-    DFU_CHECK=$(system_profiler SPUSBDataType 2 | grep "Atmel Corporation")
-  fi
-  
-  if [[ "$DFU_CHECK" != "" ]]
-  then
-  clear
-cat << EOF
-
-  | --------------------------------- |
-  |                                   |
-  |          DFU MODE ENABLED         |
-  |                                   |
-  |        RELEASE THE ESC KEY        |
-  |                                   |
-  |    DO NOT UNPLUG YOUR KEYBOARD!   |
-  |                                   |
-  | --------------------------------- |
+  Press ENTER to continue
 
 EOF
-    sleep 2
-    break
-  fi
-  sleep 1
-done
 
-# final firmware check before flashing keyboard
-if [[ "$FIRMWARE" == "" ]]
-then
-  echo ""
-  echo "ERROR - MIDI layout not found. Exiting."
-  echo ""
-  exit
-fi
+read INPUT
 
-# flash firmware
-qmk flash ${PROJECT_NAME}/$FIRMWARE
+make system76/${KEYBOARD}:${FIRMWARE}:dfu
