@@ -26,7 +26,6 @@ case $OS_CHECK in
 esac
 
 install-deps() {
-BASHRC_CHECK=$(cat ~/.bashrc | grep "\.local\/bin")
 ./util/qmk_install.sh
 git submodule init
 git submodule update
