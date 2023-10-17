@@ -22,6 +22,7 @@ EOF
 BRANCH_CHECK=$(git status | grep "On branch launch_midi")
 if [[ "$BRANCH_CHECK" == "" ]]
 then
+  git stash
   git checkout launch_midi
 fi
 
@@ -319,6 +320,7 @@ then
   exit
 elif [[ "$FIRMWARE" == "default" ]]
 then
+  git stash
   git checkout launch-3
 fi
 
