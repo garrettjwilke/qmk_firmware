@@ -5,11 +5,24 @@
 
 PROJECT_NAME=launch-midi-firmware
 ARGUMENT=$1
+
+message-box() {
+MESSAGE=$1
+cat << EOF
+  ---------------------------------
+
+    $MESSAGE
+
+  ---------------------------------
+
+EOF
+}
+
 OS_CHECK=$(uname -a | awk '{print $1}')
 case $OS_CHECK in
   Darwin) OS=mac;;
   Linux) OS=linux;;
-  *) echo "This script requires Linux. exiting"; exit;;
+  *) message-box "This script requires Linux"; exit;;
 esac
 
 install-deps() {
@@ -31,7 +44,6 @@ then
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
-      source ~/.bashrc
     else
       echo ""
       echo "QMK not installed. install using your package manager or pip."
@@ -44,19 +56,13 @@ then
     brew install qmk
   fi
 fi
+clear
+message-box "All tools installed"
+echo "Run the script again to build and flash MIDI firmware."
+exec bash
+exit
 }
 
-message-box() {
-MESSAGE=$1
-cat << EOF
-  ---------------------------------
-
-    $MESSAGE
-
-  ---------------------------------
-
-EOF
-}
 
 help-menu() {
 message-box "Launch Keyboard MIDI Firmware"
