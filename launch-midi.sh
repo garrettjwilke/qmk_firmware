@@ -29,7 +29,8 @@ then
       python3 -m pip install qmk
       PATH=$PATH:$HOME/.local/bin
       echo "export PATH=\$PATH:\$HOME/.local/bin" >> ~/.bashrc
-      source ~/.bashrc
+      exec bash
+      #source ~/.bashrc
     else
       echo ""
       echo "QMK not installed. install using your package manager or pip."
