@@ -13,9 +13,9 @@ case $OS_CHECK in
 esac
 
 install-deps() {
+./util/qmk_install.sh
 git submodule init
 git submodule update
-./util/qmk_install.sh
 QMK_CHECK=$(which qmk)
 if [[ "$QMK_CHECK" == "" ]]
 then
