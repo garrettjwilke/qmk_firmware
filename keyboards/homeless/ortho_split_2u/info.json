@@ -1,9 +1,0 @@
-{
-    "keyboard_name": "Ortho Split 2U (ortho_split_2u)",
-    "manufacturer": "System76",
-    "usb": {
-        "vid": "0x3384",
-        "pid": "0x0001",
-        "device_version": "0.0.1"
-    }
-}
