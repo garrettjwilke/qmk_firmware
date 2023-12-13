@@ -18,7 +18,7 @@
 #include QMK_KEYBOARD_H
 #define _______ KC_NO
 #define _BASE 0
-#define _GHOTI 1
+#define _MIDI 1
 #define _PADS 2
 #define _FUNC 3
 
@@ -53,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,  KC_PGDN,
       KC_BSPC,   KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,          KC_END,
       KC_LSFT,     KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH,     KC_RSFT,   KC_UP,
-      KC_LCTL,   MO(_FUNC), KC_LALT,   KC_LGUI, KC_SPC,           KC_SPC,           KC_RCTL, KC_RALT, KC_NO,       KC_LEFT, KC_DOWN, KC_RGHT
+      KC_LCTL,   KC_LALT, MO(_FUNC),  KC_LGUI, KC_SPC,           KC_SPC,           KC_RCTL, KC_RALT, KC_NO,       KC_LEFT, KC_DOWN, KC_RGHT
   ),
 
     /* GHOTI layer
@@ -79,13 +79,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
    */
 
-  [_GHOTI] = LAYOUT(
+  [_MIDI] = LAYOUT(
     MI_C, MI_F,  MI_As,  MI_Ds1,   MI_Gs1,  MI_Cs2,  MI_Fs2, MI_B2,  MI_E3,   MI_A3,  MI_D4,   MI_G4,  MI_C5,   MI_F5,    _______,
     MI_Cs, MI_Fs, MI_B,   MI_E1,    MI_A1,   MI_D2,   MI_G2,  MI_C3,   MI_F3,  MI_As3, MI_Ds4,  MI_Gs4, MI_Cs5,  MI_Fs5,    MI_OCTU,
       MI_D, MI_G,  MI_C1,  MI_F1,     MI_As1, MI_Ds2,  MI_Gs2, MI_Cs3,  MI_Fs3, MI_B3,  MI_E4,   MI_A4,  MI_D5,   MI_G5,    MI_OCTD,
       MI_Ds, MI_Gs, MI_Cs1,  MI_Fs1,  MI_B1,   MI_E2,   MI_A2,  MI_D3,   MI_G3,  MI_C4,  MI_F4,   MI_As4, MI_Ds5,         _______,
       MI_E,   MI_A,  MI_D1,   MI_G1,   MI_C2,   MI_F2,   MI_As2, MI_Ds3,   MI_Gs3, MI_Cs4, MI_Fs4, MI_B4,   MI_E5,
-      _______,   MO(_FUNC), _______, _______, _______,          _______,        _______, _______, _______,         _______, _______, _______
+      _______,   _______, MO(_FUNC),  _______, _______,          _______,        _______, _______, _______,         _______, _______, _______
   ),
 
 
@@ -112,17 +112,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
    */
 
-
-
   [_PADS] = LAYOUT(
     _______, _______,  _______, _______,  _______, _______,  _______,   _______, _______, _______, _______, _______, _______, _______,    _______,
-    _______, MI_C, MI_Cs,  MI_D, MI_Ds,  _______, _______,   MI_E1, MI_F1, MI_Fs1, MI_G1, _______, _______,_______,    _______,
-    _______,   MI_E, MI_F, MI_Fs, MI_G, _______, _______,      MI_Gs1, MI_A1, MI_As1, MI_B1, _______, _______, _______,  _______,
-      _______,   MI_Gs, MI_A, MI_As, MI_B, _______, _______,     MI_C2, MI_Cs2, MI_D2, MI_Ds2, _______, _______,         _______,
-      _______,     MI_C1, MI_Cs1, MI_D1, MI_Ds1, _______, _______, MI_E2, MI_F2, MI_Fs2, MI_G2,  _______,       MI_OCTU,
-      _______,   MO(_FUNC), _______, _______, _______,          _______,        _______, _______, _______,         _______, MI_OCTD, _______
+    _______, MI_C1, MI_Cs1,  MI_D1, MI_Ds1,  _______, _______,   MI_E2, MI_F2, MI_Fs2, MI_G2, _______, _______,_______,    _______,
+    _______,   MI_Gs, MI_A, MI_As, MI_B, _______, _______,      MI_C2, MI_Cs2, MI_D2, MI_Ds2, _______, _______, _______,  _______,
+      _______,   MI_E, MI_F, MI_Fs, MI_G, _______, _______,     MI_Gs1, MI_A1, MI_As1, MI_B1, _______, _______,         _______,
+      _______,     MI_C, MI_Cs, MI_D, MI_Ds, _______, _______, MI_E1, MI_F1, MI_Fs1, MI_G1,  _______,       MI_OCTU,
+      _______,   _______, MO(_FUNC), _______, _______,          _______,        _______, _______, _______,         _______, MI_OCTD, _______
   ),
-
 
     /* Functions layer
  _________________________________________________________________________________________________________________________________  ________
@@ -150,11 +147,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_FUNC] = LAYOUT(
     _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, KC_BRID, KC_BRIU,              KC_BSPC,     _______,
-    TO(_BASE), TO(_GHOTI), TO(_PADS), _______,  _______, _______, _______, _______, _______, _______, RGB_TOG, RGB_VAD, RGB_VAI,  KC_DEL,     KC_VOLU,
+    TO(_BASE), TO(_MIDI), TO(_PADS), _______,  _______, _______, _______, _______, _______, _______, RGB_TOG, RGB_VAD, RGB_VAI,  KC_DEL,     KC_VOLU,
     _______,   _______, _______, _______, KC_R, _______, _______, _______, _______, KC_O,  _______, _______, _______, _______,              KC_VOLD,
       KC_CAPS,   KC_A, KC_S, _______, _______, _______, _______, _______, _______,   _______, _______, _______, KC_ENT,         MI_AOFF,
       KC_LSFT,     KC_Z, KC_X, KC_C, KC_V, _______, _______, _______, _______, _______, _______,       _______,           KC_UP,
-      KC_LCTL,   _______, KC_LALT, KC_LGUI, KC_SPC,          KC_SPC,        _______, _______, _______,           KC_LEFT, KC_DOWN, KC_RIGHT
+      KC_LCTL,   KC_LALT, _______, KC_LGUI, KC_SPC,          KC_SPC,        _______, _______, _______,           KC_LEFT, KC_DOWN, KC_RIGHT
   ),
 
 };
