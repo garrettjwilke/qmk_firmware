@@ -275,8 +275,29 @@ clear
 # launch_lite only has piano layout
 if [[ "$KEYBOARD" == "launch_lite_1" ]]
 then
-  FIRMWARE=midi_piano
-  break
+message-box "Select a firmware to flash"
+cat << EOF
+    Keyboard: $KEYBOARD
+
+    [ 1 ] Piano with 32 Drum Pads
+          - Keys are arranged like a piano
+          - 32 Drum Pad Layer
+
+    [ 2 ] Factory Default Firmware
+
+    [ q ] Quit
+
+     Press 1 or 2 - (q to quit):
+
+EOF
+  read LAYOUT
+  case $LAYOUT in
+    1) FIRMWARE=midi_piano; break;;
+    2) FIRMWARE=default; break;;
+    q|Q|quit|Quit|QUIT) exit;;
+    *) echo "invalid input";;
+  esac
+break
 fi
 
 message-box "Select a firmware to flash"
