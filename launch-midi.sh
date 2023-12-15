@@ -371,7 +371,7 @@ cat << EOF
     1. Press ENTER then unplug the cable from your $KEYBOARD
     2. Press and hold the ESC key
     3. Plug in Launch while holding the ESC key
-    4. Release the ESC key 2 or 3 seconds after plugging in.
+    4. Release the ESC key when you see that the firware has flashed.
 
     (or press q to quit)
 
