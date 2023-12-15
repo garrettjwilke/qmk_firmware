@@ -368,7 +368,7 @@ message-box "Put Launch into bootloader mode"
 cat << EOF
     Keyboard: $KEYBOARD  -  Firmware: $FIRMWARE
 
-    1. Press ENTER then unplug your $KEYBOARD
+    1. Press ENTER then unplug the cable from your $KEYBOARD
     2. Press and hold the ESC key
     3. Plug in Launch while holding the ESC key
     4. Release the ESC key 2 or 3 seconds after plugging in.
